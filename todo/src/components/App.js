@@ -1,10 +1,10 @@
-import './App.css';
-import ToDo from './reducers/Reducer.js';
+import '../css/styles.scss';
+import ToDo from './Todo.js';
 
 function App() {
   return (
     <div className='App'>
-      <header className='App-header'>
+      <header>
         <h4>Kyle's To-Do App</h4>
       </header>
       <div>
