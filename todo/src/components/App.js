@@ -1,17 +1,12 @@
-import '../css/styles.scss';
-import ToDo from './Todo.js';
+import React from 'react';
+import '../css/styles.css';
+import { Provider } from '../store';
+import TodoList from './TodoList';
 
-function App() {
-  return (
-    <div className='App'>
-      <header>
-        <h4>Kyle's To-Do App</h4>
-      </header>
-      <div>
-        <ToDo />
-      </div>
-    </div>
-  );
-}
+const App = () => (
+  <Provider>
+    <TodoList className='App' />
+  </Provider>
+);
 
 export default App;

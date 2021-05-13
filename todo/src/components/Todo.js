@@ -1,39 +1,44 @@
-import React, { useReducer } from 'react';
-import { reducer } from '../reducers/Reducer.js';
+import React from 'react';
 
-const initialState = [
-  {
-    task: 'Finish this to-do app...',
-    completed: false,
-    id: 1,
-  },
-];
+import { useDispatch, useTrackedState } from '../store';
+import { useFlasher } from '../utils';
 
-const ToDo = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
+const renderHighlight = (task, query) => {
+  if (!query) return task;
+  const index = task.indexOf(query);
+  if (index === -1) return task;
   return (
-    <>
-      <div>{state.count}</div>
-      <button
-        onClick={() =>
-          dispatch({
-            type: 'ADD_TODO',
-            payload: {
-              task: 'New Todo',
-              completed: false,
-              id: 2,
-            },
-          })
-        }
-      >
-        Add It!
-      </button>
-      <button onClick={() => dispatch({ type: 'COMPLETE_TODO' })}>
-        Complete It!
-      </button>
-    </>
+    <React.Fragment>
+      {task.slice(0, index)}
+      <b>{query}</b>
+      {task.slice(index + query.length)}
+    </React.Fragment>
   );
 };
 
-export default ToDo;
+const Todo = ({ id, task, completed }) => {
+  const dispatch = useDispatch();
+  const state = useTrackedState();
+  const delTodo = () => {
+    dispatch({ type: 'DELETE_TODO', id });
+  };
+  return (
+    <li ref={useFlasher()}>
+      <input
+        type='checkbox'
+        checked={!!completed}
+        onChange={() => dispatch({ type: 'TOGGLE_TODO', id })}
+      />
+      <span
+        style={{
+          textDecoration: completed ? 'line-through' : 'none',
+        }}
+      >
+        {completed ? task : renderHighlight(task, state.query)}
+      </span>
+      <button onClick={delTodo}>Delete</button>
+    </li>
+  );
+};
+
+export default React.memo(Todo);
