@@ -10,7 +10,7 @@ const TodoList = () => {
     dispatch({ type: 'SET_QUERY', query: event.target.value });
   };
   return (
-    <div>
+    <div className='App'>
       <ul>
         {state.todos.map(({ id, task, completed }) => (
           <Todo key={id} id={id} task={task} completed={completed} />
